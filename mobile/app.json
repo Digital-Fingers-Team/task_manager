@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Task Manager",
+    "slug": "tasks-manager",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "tasksmanager",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.local.tasksmanager"
+    },
+    "android": {
+      "package": "com.local.tasksmanager",
+      "adaptiveIcon": {
+        "backgroundColor": "#2563EB"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "tasks-manager-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.4.0",
+  "scripts": {
+    "mobile:start": "pnpm --filter mobile start",
+    "mobile:android": "pnpm --filter mobile android",
+    "mobile:ios": "pnpm --filter mobile ios",
+    "server:dev": "pnpm --filter server dev",
+    "server:build": "pnpm --filter server build",
+    "server:start": "pnpm --filter server start",
+    "typecheck": "pnpm --filter mobile typecheck && pnpm --filter server typecheck",
+    "lint": "pnpm --filter mobile lint"
+  }
+}

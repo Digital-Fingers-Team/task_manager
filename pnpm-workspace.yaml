@@ -1,0 +1,13 @@
+packages:
+  - mobile
+  - server
+
+onlyBuiltDependencies:
+  - bcrypt
+  - esbuild
+  - unrs-resolver
+
+allowBuilds:
+  bcrypt: true
+  esbuild: true
+  unrs-resolver: true
