@@ -7,6 +7,7 @@ import { env } from "./config/env";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { authRouter } from "./routes/authRoutes";
 import { taskRouter } from "./routes/taskRoutes";
+import { getNetworkUrls } from "./utils/network";
 
 const app = express();
 
@@ -36,7 +37,20 @@ const startServer = async (): Promise<void> => {
     await connectDatabase();
 
     const server = app.listen(env.port, () => {
+      const localUrl = `http://localhost:${env.port}`;
+      const networkUrls = getNetworkUrls(env.port);
+
       console.log(`API server listening on port ${env.port}`);
+      console.log(`Local:   ${localUrl}`);
+
+      if (networkUrls.length > 0) {
+        networkUrls.forEach((url) => {
+          console.log(`Network: ${url}`);
+        });
+        console.log(`Mobile API URL example: ${networkUrls[0]}/api`);
+      } else {
+        console.log("Network: no external IPv4 address found");
+      }
     });
 
     const shutdown = async (signal: string): Promise<void> => {
