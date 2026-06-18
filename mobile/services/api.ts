@@ -4,6 +4,7 @@ import {
   type AxiosError,
   type AxiosInstance
 } from "axios";
+import { Platform } from "react-native";
 
 import type {
   AuthSession,
@@ -19,16 +20,33 @@ import type {
   UpdateTaskInput
 } from "@/types/task";
 
-const DEFAULT_API_URL = "http://localhost:5000/api";
+const LOCAL_WEB_API_URL = "http://localhost:5000/api";
+const LOCAL_ANDROID_EMULATOR_API_URL = "http://10.0.2.2:5000/api";
 const normalizeApiBaseUrl = (value: string): string => {
   const trimmed = value.trim().replace(/\/+$/, "");
 
   return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
 };
 
-const apiBaseUrl = normalizeApiBaseUrl(
-  process.env.EXPO_PUBLIC_API_URL ?? DEFAULT_API_URL
-);
+const resolveApiBaseUrl = (): string => {
+  const configured = process.env.EXPO_PUBLIC_API_URL?.trim();
+
+  if (Platform.OS === "web") {
+    return LOCAL_WEB_API_URL;
+  }
+
+  if (configured && configured.length > 0) {
+    return normalizeApiBaseUrl(configured);
+  }
+
+  if (Platform.OS === "android") {
+    return LOCAL_ANDROID_EMULATOR_API_URL;
+  }
+
+  return LOCAL_WEB_API_URL;
+};
+
+const apiBaseUrl = resolveApiBaseUrl();
 
 interface ApiValidationError {
   field: string;

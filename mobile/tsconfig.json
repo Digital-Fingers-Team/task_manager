@@ -12,6 +12,17 @@
     }
   },
   "include": [
-    "src"
+    "app",
+    "components",
+    "constants",
+    "hooks",
+    "navigation",
+    "screens",
+    "services",
+    "store",
+    "theme",
+    "types",
+    "utils",
+    "expo-env.d.ts"
   ]
 }
