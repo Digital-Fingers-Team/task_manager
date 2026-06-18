@@ -1,3 +1,5 @@
+import "react-native-gesture-handler";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { ErrorBoundaryProps } from "expo-router";
 import { Stack } from "expo-router";

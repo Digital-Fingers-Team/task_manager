@@ -8,6 +8,7 @@ build/
 .env
 npm-debug.log*
 mobile-expo*.log
+mobile-run*.log
 yarn-debug.log*
 yarn-error.log*
 *.jks

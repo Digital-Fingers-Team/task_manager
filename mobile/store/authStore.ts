@@ -28,6 +28,23 @@ interface AuthStore {
   clearAuthData: () => void;
 }
 
+const hasText = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
+const isValidSession = (session: AuthSession | null): session is AuthSession => {
+  if (!session) {
+    return false;
+  }
+
+  return (
+    hasText(session.userId) &&
+    hasText(session.name) &&
+    hasText(session.email) &&
+    hasText(session.token) &&
+    hasText(session.startedAt)
+  );
+};
+
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
@@ -126,7 +143,14 @@ export const useAuthStore = create<AuthStore>()(
         session: state.session
       }),
       onRehydrateStorage: () => (state) => {
-        setApiAuthToken(state?.session?.token ?? null);
+        if (!state || !isValidSession(state.session)) {
+          setApiAuthToken(null);
+          state?.clearAuthData();
+
+          return;
+        }
+
+        setApiAuthToken(state.session.token);
         state?.setHasHydrated(true);
       }
     }
