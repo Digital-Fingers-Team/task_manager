@@ -1,35 +1,40 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import type { ErrorBoundaryProps } from "expo-router";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ActivityIndicator, PaperProvider, Text } from "react-native-paper";
+import { Button, PaperProvider, Text } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useAuthStore } from "@/store/authStore";
-import { useSettingsStore } from "@/store/settingsStore";
-import { useTaskStore } from "@/store/taskStore";
 import { spacing } from "@/theme";
 
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
 
-const RootNavigator = () => {
-  const authHydrated = useAuthStore((state) => state.hasHydrated);
-  const taskHydrated = useTaskStore((state) => state.hasHydrated);
-  const settingsHydrated = useSettingsStore((state) => state.hasHydrated);
-
-  if (!authHydrated || !taskHydrated || !settingsHydrated) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator />
-        <Text variant="bodyMedium">Loading workspace</Text>
-      </View>
-    );
-  }
-
-  return <Stack screenOptions={{ headerShown: false }} />;
-};
+export const ErrorBoundary = ({ error, retry }: ErrorBoundaryProps) => (
+  <GestureHandlerRootView style={styles.root}>
+    <SafeAreaProvider>
+      <PaperProvider>
+        <StatusBar style="dark" />
+        <View style={styles.errorScreen}>
+          <MaterialCommunityIcons
+            name="alert-circle-outline"
+            size={42}
+            color="#DC2626"
+          />
+          <Text variant="titleMedium">Something went wrong</Text>
+          <Text variant="bodyMedium" style={styles.errorMessage}>
+            {error.message}
+          </Text>
+          <Button mode="contained" onPress={retry}>
+            Try again
+          </Button>
+        </View>
+      </PaperProvider>
+    </SafeAreaProvider>
+  </GestureHandlerRootView>
+);
 
 export default function RootLayout() {
   const { theme, isDark } = useAppTheme();
@@ -50,7 +55,7 @@ export default function RootLayout() {
           }}
         >
           <StatusBar style={isDark ? "light" : "dark"} />
-          <RootNavigator />
+          <Stack screenOptions={{ headerShown: false }} />
         </PaperProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -61,10 +66,14 @@ const styles = StyleSheet.create({
   root: {
     flex: 1
   },
-  loading: {
+  errorScreen: {
     alignItems: "center",
     flex: 1,
     gap: spacing.md,
-    justifyContent: "center"
+    justifyContent: "center",
+    padding: spacing.lg
+  },
+  errorMessage: {
+    textAlign: "center"
   }
 });

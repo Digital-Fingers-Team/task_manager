@@ -22,7 +22,6 @@
     "store",
     "theme",
     "types",
-    "utils",
-    "expo-env.d.ts"
+    "utils"
   ]
 }

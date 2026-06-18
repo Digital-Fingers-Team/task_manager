@@ -36,11 +36,12 @@ const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
 
-    const server = app.listen(env.port, () => {
+    const host = "0.0.0.0";
+    const server = app.listen(env.port, host, () => {
       const localUrl = `http://localhost:${env.port}`;
       const networkUrls = getNetworkUrls(env.port);
 
-      console.log(`API server listening on port ${env.port}`);
+      console.log(`API server listening on ${host}:${env.port}`);
       console.log(`Local:   ${localUrl}`);
 
       if (networkUrls.length > 0) {
