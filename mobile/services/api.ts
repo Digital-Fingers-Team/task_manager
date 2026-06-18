@@ -20,7 +20,15 @@ import type {
 } from "@/types/task";
 
 const DEFAULT_API_URL = "http://localhost:5000/api";
-const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL ?? DEFAULT_API_URL;
+const normalizeApiBaseUrl = (value: string): string => {
+  const trimmed = value.trim().replace(/\/+$/, "");
+
+  return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
+};
+
+const apiBaseUrl = normalizeApiBaseUrl(
+  process.env.EXPO_PUBLIC_API_URL ?? DEFAULT_API_URL
+);
 
 interface ApiValidationError {
   field: string;
